@@ -193,6 +193,50 @@ void bubbleSort2(vector <int>& data)
 	cout << "Bubble sort2 " << elapsed.count() << endl;
 }
 
+void Bubblesort3String(vector <string>& data)
+{
+	auto start = chrono::high_resolution_clock::now();
+
+	bool swapped = true;
+	int begin = 0;
+	int end = data.size() - 1;
+
+	while (swapped)
+	{
+		swapped = false;
+
+		for (int i = begin; i < end; i++)
+		{
+			if (data[i] > data[i + 1])
+			{
+				swap(data[i], data[i + 1]);
+				swapped = true;
+			}
+		}
+
+		if (!swapped)
+			break;
+		swapped = false;
+
+		end--;
+
+		for (int i = end - 1; i >= begin; i--)
+		{
+			if (data[i] > data[i + 1])
+			{
+				swap(data[i], data[i + 1]);
+				swapped = true;
+			}
+		}
+
+		begin++;
+	}
+
+	auto finish = chrono::high_resolution_clock::now();
+	chrono::duration<double> elapsed = finish - start;
+	cout << "Bubble sort3 " << elapsed.count() << endl;
+}
+
 void Bubblesort3(vector <int>& data)
 {
 	auto start = chrono::high_resolution_clock::now();
@@ -237,6 +281,36 @@ void Bubblesort3(vector <int>& data)
 	cout << "Bubble sort3 " << elapsed.count() << endl;
 }
 
+void selectionSort(vector <string>& data)
+{
+	auto start = chrono::high_resolution_clock::now();
+
+	int i, j, minIndex;
+	string tmp;
+
+	for (i = 0; i < data.size() - 1; i++)
+	{
+		minIndex = i;
+
+		for (j = i + 1; j < data.size(); j++)
+
+			if (data[j] < data[minIndex])
+				minIndex = j;
+
+		if (minIndex != i)
+		{
+			tmp = data[i];
+			data[i] = data[minIndex];
+			data[minIndex] = tmp;
+		}
+	}
+
+	auto finish = chrono::high_resolution_clock::now();
+	chrono::duration<double> elapsed = finish - start;
+	cout << "Selection sort " << elapsed.count() << endl;
+
+}
+
 void selectionSort(vector <int>& data)
 {
 	auto start = chrono::high_resolution_clock::now();
@@ -263,6 +337,27 @@ void selectionSort(vector <int>& data)
 	auto finish = chrono::high_resolution_clock::now();
 	chrono::duration<double> elapsed = finish - start;
 	cout << "Selection sort " << elapsed.count() << endl;
+
+}
+
+void check_if_sortedString(vector<string>& data)
+{
+	int i = 1;
+	int is_sorted = true;
+
+	while ((i < data.size() && is_sorted))
+	{
+		if (data[i - 1] > data[i])
+			is_sorted = false;
+
+		i++;
+	}
+
+	if (!is_sorted)
+		cout << "ERROR - DATA NOT SORTED" << endl << endl;
+
+	else
+		cout << "Data is sorted" << endl << endl;
 
 }
 
