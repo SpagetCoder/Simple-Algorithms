@@ -3,7 +3,8 @@
 #include <iostream>
 #include <chrono>
 #include <vector>
-
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ void insertionSortString(vector <string>& data)
 
 	auto finish = chrono::high_resolution_clock::now();
 	chrono::duration<double> elapsed = finish - start;
-	cout << "Insertion sort time " << elapsed.count() << endl;
+	cout << "Insertion sort time for strings " << elapsed.count() << endl;
 }
 
 void insertionSort(vector <int>& data)
@@ -81,7 +82,7 @@ void insertionSort2String(vector <string>& data)
 
 	auto finish = chrono::high_resolution_clock::now();
 	chrono::duration<double> elapsed = finish - start;
-	cout << "Insertion2 sort time " << elapsed.count() << endl;
+	cout << "Insertion2 sort time for strings " << elapsed.count() << endl;
 }
 
 void insertionSort2(vector <int>& data)
@@ -130,7 +131,7 @@ void bubbleSortString(vector <string>& data)
 
 	auto finish = chrono::high_resolution_clock::now();
 	chrono::duration<double> elapsed = finish - start;
-	cout << "Bubble sort " << elapsed.count() << endl;
+	cout << "Bubble sort for strings " << elapsed.count() << endl;
 }
 
 void bubbleSort(vector <int>& data)
@@ -170,7 +171,7 @@ void bubbleSort2String(vector <string>& data)
 
 	auto finish = chrono::high_resolution_clock::now();
 	chrono::duration<double> elapsed = finish - start;
-	cout << "Bubble sort2 " << elapsed.count() << endl;
+	cout << "Bubble sort2 for strings " << elapsed.count() << endl;
 }
 
 void bubbleSort2(vector <int>& data)
@@ -193,7 +194,51 @@ void bubbleSort2(vector <int>& data)
 	cout << "Bubble sort2 " << elapsed.count() << endl;
 }
 
-void Bubblesort3String(vector <string>& data)
+void bubblesort3String(vector <string>& data)
+{
+	auto start = chrono::high_resolution_clock::now();
+
+	bool swapped = true;
+	int begin = 0;
+	int end = data.size() - 1;
+
+	while (swapped)
+	{
+		swapped = false;
+
+		for (int i = begin; i < end; i++)
+		{
+			if (data[i] > data[i + 1])
+			{
+				swap(data[i], data[i + 1]);
+				swapped = true;
+			}
+		}
+
+		if (!swapped)
+			break;
+		swapped = false;
+
+		end--;
+
+		for (int i = end - 1; i >= begin; i--)
+		{
+			if (data[i] > data[i + 1])
+			{
+				swap(data[i], data[i + 1]);
+				swapped = true;
+			}
+		}
+
+		begin++;
+	}
+
+	auto finish = chrono::high_resolution_clock::now();
+	chrono::duration<double> elapsed = finish - start;
+	cout << "Bubble sort3 for strings " << elapsed.count() << endl;
+}
+
+void bubblesort3(vector <int>& data)
 {
 	auto start = chrono::high_resolution_clock::now();
 
@@ -237,51 +282,7 @@ void Bubblesort3String(vector <string>& data)
 	cout << "Bubble sort3 " << elapsed.count() << endl;
 }
 
-void Bubblesort3(vector <int>& data)
-{
-	auto start = chrono::high_resolution_clock::now();
-
-	bool swapped = true;
-	int begin = 0;
-	int end = data.size() - 1;
-
-	while (swapped)
-	{
-		swapped = false;
-
-		for (int i = begin; i < end; i++)
-		{
-			if (data[i] > data[i + 1])
-			{
-				swap(data[i], data[i + 1]);
-				swapped = true;
-			}
-		}
-
-		if (!swapped)
-			break;
-		swapped = false;
-
-		end--;
-
-		for (int i = end - 1; i >= begin; i--)
-		{
-			if (data[i] > data[i + 1])
-			{
-				swap(data[i], data[i + 1]);
-				swapped = true;
-			}
-		}
-
-		begin++;
-	}
-
-	auto finish = chrono::high_resolution_clock::now();
-	chrono::duration<double> elapsed = finish - start;
-	cout << "Bubble sort3 " << elapsed.count() << endl;
-}
-
-void selectionSort(vector <string>& data)
+void selectionSortString(vector <string>& data)
 {
 	auto start = chrono::high_resolution_clock::now();
 
@@ -307,7 +308,7 @@ void selectionSort(vector <string>& data)
 
 	auto finish = chrono::high_resolution_clock::now();
 	chrono::duration<double> elapsed = finish - start;
-	cout << "Selection sort " << elapsed.count() << endl;
+	cout << "Selection sort for strings " << elapsed.count() << endl;
 
 }
 
@@ -382,6 +383,30 @@ void check_if_sorted(vector<int>& data)
 
 }
 
+vector<string> generateRandomStrings(int n)
+{
+	ifstream file("text.txt");
+	vector<string> all;
+
+	string temp;
+	while (file >> temp)
+	{
+		all.push_back(temp);
+	}
+
+	srand((unsigned int)time(NULL));
+	vector<string> result;
+
+	int size = all.size();
+
+	for (int i = 0; i < n; ++i)
+	{
+		result.push_back(all[rand() % size]);
+	}
+
+	return result;
+}
+
 int main(int argc, char *argv[])
 {
 	int size;
@@ -390,6 +415,9 @@ int main(int argc, char *argv[])
 
 	vector <int> data;
 	vector <int> data2;
+	vector <string> dataString = generateRandomStrings(size);
+	vector <string> dataStringCopy;
+
 	srand((unsigned)time(0));
 
 	for (int i = 0; i < size; i++)
@@ -401,31 +429,56 @@ int main(int argc, char *argv[])
 	data2 = data;
 	selectionSort(data2);
 	check_if_sorted(data2);
-
 	// bubble sort
 	data2 = data;
 	bubbleSort(data2);
 	check_if_sorted(data2);
-
 	// insertion sort
 	data2 = data;
 	insertionSort(data2);
 	check_if_sorted(data2);
-
 	// insertion sort2
 	data2 = data;
 	insertionSort2(data2);
 	check_if_sorted(data2);
-
 	//bubble sort 2
 	data2 = data;
 	bubbleSort2(data2);
 	check_if_sorted(data2);
-
 	// bubble sort 3
 	data2 = data;
-	Bubblesort3(data2);
+	bubblesort3(data2);
 	check_if_sorted(data2);
+
+	/**
+	String sort
+	**/
+
+	// selection sort
+	dataStringCopy = dataString;
+	selectionSortString(dataStringCopy);
+	check_if_sortedString(dataStringCopy);
+	// bubble sort
+	dataStringCopy = dataString;
+	bubbleSortString(dataStringCopy);
+	check_if_sortedString(dataStringCopy);
+	// insertion sort
+	dataStringCopy = dataString;
+	insertionSortString(dataStringCopy);
+	check_if_sortedString(dataStringCopy);
+	// insertion sort2
+	dataStringCopy = dataString;
+	insertionSort2String(dataStringCopy);
+	check_if_sortedString(dataStringCopy);
+	// bubble sort2
+	dataStringCopy = dataString;
+	bubbleSort2String(dataStringCopy);
+	check_if_sortedString(dataStringCopy);
+	// buble sort 3
+	dataStringCopy = dataString;
+	bubblesort3String(dataStringCopy);
+	check_if_sortedString(dataStringCopy);
+
 
 	system("pause");
 
